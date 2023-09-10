@@ -1,0 +1,159 @@
+:root {
+  --neutral-900: #171717;
+  --neutral-800: #262626;
+  --neutral-700: #404040;
+  --neutral-600: #525252;
+  --neutral-500: #737373;
+  --neutral-400: #a3a3a3;
+  --neutral-300: #d4d4d4;
+  --neutral-200: #e5e5e5;
+  --orange-500: #f97316;
+}
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+}
+
+/* LAYOUT STYLING */
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  background-color: black;
+}
+
+.navbar {
+  height: 100%;
+  width: 15%;
+  background-color: var(--neutral-900);
+}
+
+.outlet {
+  height: 100%;
+  width: 85%;
+  background-color: var(--neutral-800);
+}
+
+/* NAVBAR STYLING */
+.navbarComponent {
+  height: 100%;
+  width: 100%;
+}
+.navbar20 {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar80 {
+  height: 80%;
+  width: 100%;
+}
+
+.navbarLi {
+  width: 100%;
+  padding-left: 16px;
+  background-color: var(--neutral-800);
+  margin-top: 4px;
+  border-radius: 6px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+.navbarLi:hover {
+  background-color: var(--neutral-700);
+}
+.navbarLi:hover .link {
+  color: white;
+}
+.navbarLi:hover .navbarIcon {
+  color: white;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--neutral-400);
+  font-size: 20px;
+}
+
+.navbarIcon {
+  height: 100%;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-400);
+}
+
+/* VEHICLE FORM */
+.formMain {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.fieldsetForm {
+  height: 70%;
+  width: 100%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.buttonDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.divForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.inputForm {
+  width: 80%;
+  background-color: var(--neutral-800);
+  height: 60px;
+  font-size: 22px;
+  text-align: center;
+  color: var(--neutral-200);
+  border: none;
+  border-radius: 6px;
+}
+
+.labelForm {
+  color: white;
+  font-size: 26px;
+}
+
+.legendForm {
+  color: var(--neutral-400);
+  margin-bottom: 20px;
+}
+
+.buttonDiv button {
+  border: none;
+  padding: 8px;
+  width: 30%;
+  height: 50px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 22px;
+  background-color: var(--neutral-300);
+}
+
+.buttonDiv button:hover {
+  transition: 0.1s all;
+  background-color: var(--orange-500);
+  color: white;
+}

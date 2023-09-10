@@ -24,7 +24,7 @@ const VehicleForm = () => {
     );
 
     // api post request to add newly formed vehicle object to database
-    //addVehicle(newVehicleForm);
+    addVehicle(newVehicleForm);
   });
 
   useEffect(() => {}, []);

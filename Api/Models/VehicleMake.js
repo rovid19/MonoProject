@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const vehicleMakeSchema = new mongoose.Schema({
-  Name: String,
+  name: String,
 });
 
 const vehicleMakeModel = mongoose.model("vehicleMake", vehicleMakeSchema);

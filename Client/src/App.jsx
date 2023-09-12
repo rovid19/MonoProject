@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "../src/Pages/Home.jsx";
+import Home from "../src/Pages/Home";
 import AddVehicle from "../src/Pages/AddVehicle";
 import Layout from "../src/Layout.jsx";
 import { vehicleData } from "./Stores/Vehicle";

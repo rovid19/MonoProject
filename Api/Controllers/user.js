@@ -5,17 +5,22 @@ export const addVehicle = async (req, res) => {
   const { plainJsVehicleObject } = req.body;
   try {
     const newVehicleMake = await vehicleMake.create({
-      Name: plainJsVehicleObject.vehicleName,
+      name: plainJsVehicleObject.vehicleName,
     });
     const newVehicleModel = await vehicleModel.create({
-      Name: plainJsVehicleObject.vehicleModel,
-      YearMade: plainJsVehicleObject.vehicleYear,
-      Price: plainJsVehicleObject.vehiclePrice,
-      MakeId: newVehicleMake._id,
+      name: plainJsVehicleObject.vehicleModel,
+      yearMade: plainJsVehicleObject.vehicleYear,
+      price: plainJsVehicleObject.vehiclePrice,
+      makeId: newVehicleMake._id,
     });
 
     res.json(newVehicleModel);
   } catch (e) {
     console.log(e);
   }
+};
+
+export const getVehicles = async (req, res) => {
+  const allVehicles = await vehicleModel.find().populate("makeId", "name");
+  res.json(allVehicles);
 };

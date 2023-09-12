@@ -16,3 +16,14 @@ export const addVehicle = async (vehicleObject) => {
     console.log(e);
   }
 };
+
+export const getVehicle = async () => {
+  try {
+    const data = await axios.get("/api/user/get-vehicles");
+
+    vehicleData.newVehicleArray(data.data);
+    console.log(toJS(vehicleData));
+  } catch (e) {
+    console.log(e);
+  }
+};

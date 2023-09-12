@@ -11,7 +11,7 @@ export const addVehicle = async (vehicleObject) => {
     const data = await axios.post("/api/user/add-vehicle", {
       plainJsVehicleObject,
     });
-    vehicleData.addVehicleToArray(data);
+    vehicleData.addVehicleToArray(data.data);
   } catch (e) {
     console.log(e);
   }
@@ -20,9 +20,19 @@ export const addVehicle = async (vehicleObject) => {
 export const getVehicle = async () => {
   try {
     const data = await axios.get("/api/user/get-vehicles");
-
     vehicleData.newVehicleArray(data.data);
-    console.log(toJS(vehicleData));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteVehicle = async (vehicleId) => {
+  console.log(vehicleId);
+  try {
+    const data = await axios.delete("/api/user/delete-vehicle", {
+      data: { vehicleId },
+    });
+    getVehicle();
   } catch (e) {
     console.log(e);
   }

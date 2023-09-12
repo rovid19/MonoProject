@@ -34,6 +34,7 @@
   margin-top: 4px;
   display: flex;
   color: var(--neutral-300);
+  position: relative;
 }
 
 .articleGridHome {
@@ -43,6 +44,7 @@
   margin-top: 4px;
   color: var(--neutral-300);
   display: flex;
+  position: relative;
 }
 
 .buttonListGridToggle {
@@ -81,6 +83,7 @@
 
 .articleListInfo h2 {
   font-size: 38px;
+  overflow-wrap: break-word;
 }
 .articleListPrice h2 {
   font-size: 38px;
@@ -126,4 +129,27 @@
   height: 100%;
   justify-content: center;
   gap: 10px;
+}
+
+.deleteListing {
+  background-color: transparent;
+  border: none;
+  height: 50%;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.deleteListing:hover {
+  color: var(--orange-500);
+}
+
+.optionsForVehicles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 10%;
 }

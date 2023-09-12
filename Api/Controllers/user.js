@@ -22,5 +22,14 @@ export const addVehicle = async (req, res) => {
 
 export const getVehicles = async (req, res) => {
   const allVehicles = await vehicleModel.find().populate("makeId", "name");
+
   res.json(allVehicles);
+};
+
+export const deleteVehicle = async (req, res) => {
+  const { vehicleId } = req.body;
+
+  const deleteVehicle = await vehicleModel.findByIdAndDelete(vehicleId);
+
+  res.json("ok");
 };

@@ -3,7 +3,6 @@ import VehicleForm from "../../Components/VehicleForm";
 import { vehicleData } from "../../Stores/Vehicle";
 
 const index = () => {
-  console.log(vehicleData, "ok");
   return (
     <section className="mainSection">
       <div className="mainDiv">

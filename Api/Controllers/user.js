@@ -33,3 +33,33 @@ export const deleteVehicle = async (req, res) => {
 
   res.json("ok");
 };
+
+export const getVehicleById = async (req, res) => {
+  const { vehicleId } = req.params;
+
+  const findVehicle = await vehicleModel
+    .findById(vehicleId)
+    .populate("makeId", "name");
+
+  res.json(findVehicle);
+};
+
+export const editVehicle = async (req, res) => {
+  const { vehicleId, name, model, year, price } = req.body;
+  const vehicleM = await vehicleModel.findById(vehicleId.vehicleId);
+  const vehicleMa = await vehicleMake.findById(vehicleM.makeId._id);
+
+  vehicleM.set({
+    name: model,
+    yearMade: year,
+    price: price,
+  });
+
+  vehicleMa.set({
+    name: name,
+  });
+
+  await vehicleM.save();
+  await vehicleMa.save();
+  res.json(vehicleM);
+};

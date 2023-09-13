@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { subPage } from "../Stores/Page";
 
 const Navbar = () => {
   return (
@@ -27,7 +28,11 @@ const Navbar = () => {
                 />
               </svg>
             </span>
-            <Link to="/" className="link">
+            <Link
+              to="/"
+              onClick={() => subPage.addPage("home")}
+              className="link"
+            >
               All Vehicles
             </Link>
           </li>
@@ -49,7 +54,11 @@ const Navbar = () => {
                 />
               </svg>
             </span>
-            <Link to="/addvehicle" className="link">
+            <Link
+              to="/addvehicle"
+              onClick={() => subPage.addPage("addVehicle")}
+              className="link"
+            >
               Add Vehicle
             </Link>
           </li>

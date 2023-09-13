@@ -52,7 +52,7 @@
   top: 0;
   left: 0;
   height: 50px;
-  width: 50px;
+  width: 70px;
   background-color: transparent;
   border: none;
   z-index: 50;
@@ -133,7 +133,9 @@
 }
 
 .deleteListing {
-  background-color: transparent;
+  background-color: var(--neutral-900);
+  border-radius: 6px;
+  color: var(--neutral-300);
   border: none;
   height: 50%;
   width: 100%;
@@ -148,15 +150,33 @@
 }
 
 .optionsForVehicles {
+  padding: 16px;
   position: absolute;
   top: 0;
   right: 0;
   height: 100%;
-  width: 10%;
+  width: 7%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionsForVehiclesGrid {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 15%;
+  width: 50%;
+  display: flex;
+  gap: 8px;
+  padding-top: 8px;
+  padding-right: 8px;
 }
 
 .editListing {
-  background-color: transparent;
+  border-radius: 6px;
+  background-color: var(--neutral-900);
+  color: var(--neutral-300);
   border: none;
   height: 50%;
   width: 100%;
@@ -168,5 +188,34 @@
 }
 
 .editListing:hover {
+  color: var(--orange-500);
+}
+
+.editListingGrid {
+  border-radius: 6px;
+  background-color: var(--neutral-900);
+  color: var(--neutral-300);
+  border: none;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+
+.deleteListingGrid {
+  background-color: var(--neutral-900);
+  border-radius: 6px;
+  color: var(--neutral-300);
+  border: none;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+
+.editListingGrid:hover {
+  color: var(--orange-500);
+}
+.deleteListingGrid:hover {
   color: var(--orange-500);
 }

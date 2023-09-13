@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { action } from "mobx";
+import { action, toJS } from "mobx";
 import { observer } from "mobx-react";
-import { addVehicle } from "../Services/ApiRequests";
-import { Vehicle } from "../Stores/Vehicle";
+import { addVehicle, editVehicle } from "../Services/ApiRequests";
+import { Vehicle, vehicle, vehicleDbId } from "../Stores/Vehicle";
+import { useNavigate } from "react-router-dom";
+import { subPage } from "../Stores/Page";
 
 const VehicleForm = () => {
   const [vehicleName, setVehicleName] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
-  const [vehicleYear, setVehicleYear] = useState(0);
-  const [vehiclePrice, setVehiclePrice] = useState(0);
+  const [vehicleYear, setVehicleYear] = useState(null);
+  const [vehiclePrice, setVehiclePrice] = useState(null);
 
-  // fetch vehicle data if appPage is editVehicle
-  useEffect(() => {}, []);
+  const navigate = useNavigate();
 
-  // add vehicle to database if appPage is addVehicle
+  // edit vehicle and save changes to the database
+  const editVehicleForm = (e) => {
+    e.preventDefault();
+    editVehicle(
+      vehicleName,
+      vehicleModel,
+      vehicleYear,
+      vehiclePrice,
+      vehicleDbId
+    );
+    navigate("/");
+  };
+
+  // add vehicle to the database if subPage is addVehicle
   const addVehicleToDatabase = action((e) => {
     e.preventDefault();
     const newVehicleForm = new Vehicle(
@@ -23,17 +37,34 @@ const VehicleForm = () => {
       vehiclePrice
     );
 
-    // api post request to add newly formed vehicle object to database
+    // api post request to add newly formed vehicle object to the database
     addVehicle(newVehicleForm);
+    setTimeout(() => {
+      navigate("/");
+    }, [500]);
   });
 
-  useEffect(() => {}, []);
+  // determine whether the subpage is for editing an existing vehicle or adding a new one, and set the four base vehicle states accordingly
+  useEffect(() => {
+    if (subPage.subPage === "editVehicle") {
+      console.log(vehicle.vehicleName);
+      setVehicleName(vehicle.vehicleName);
+      setVehicleModel(vehicle.vehicleModel);
+      setVehicleYear(vehicle.vehicleYear);
+      setVehiclePrice(vehicle.vehiclePrice);
+    }
+  }, [subPage.subPage, vehicle.vehicleModel]);
+
   return (
     <form
-      action="/submit"
-      method="post"
       className="formMain"
-      onSubmit={addVehicleToDatabase}
+      onSubmit={(e) => {
+        if (subPage.subPage === "editVehicle") {
+          editVehicleForm(e);
+        } else {
+          addVehicleToDatabase(e);
+        }
+      }}
     >
       <fieldset className="fieldsetForm">
         <div>
@@ -97,7 +128,9 @@ const VehicleForm = () => {
         </div>
       </fieldset>
       <div className="buttonDiv">
-        <button type="submit">Add vehicle</button>
+        <button type="submit">
+          {subPage.subPage === "editVehicle" ? "Save changes" : "Add vehicle"}
+        </button>
       </div>
     </form>
   );

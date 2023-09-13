@@ -1,4 +1,4 @@
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 class Page {
   subPage = "";
@@ -8,6 +8,7 @@ class Page {
 
     makeObservable(this, {
       subPage: observable,
+      addPage: action,
     });
   }
 

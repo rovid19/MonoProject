@@ -47,26 +47,68 @@
   position: relative;
 }
 
-.buttonListGridToggle {
+.homeControls {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
   position: absolute;
   top: 0;
   left: 0;
-  height: 50px;
+  width: 20%;
+  height: 60px;
+  z-index: 50;
+}
+
+.pageButtons {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+  justify-content: center;
+}
+
+.pageButtons > button {
+  height: 100%;
+  background-color: var(--neutral-900);
+  border: none;
+  border-radius: 6px;
+  color: var(--neutral-300);
+  width: 50px;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+.pageButtons > button:hover {
+  color: var(--orange-500);
+}
+.pageButtons > h1 {
+  font-size: 16px;
+}
+
+.buttonListGridToggle {
+  height: 100%;
   width: 70px;
+  flex-grow: 0;
   background-color: transparent;
   border: none;
-  z-index: 50;
+  cursor: pointer;
+  border-radius: 6px;
 }
 
 .selectListGridToggle {
   height: 100%;
   width: 100%;
   background-color: var(--neutral-900);
+  border-radius: 6px;
   color: var(--neutral-300);
   border: none;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  padding: 2px;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .articleListImg {
@@ -116,6 +158,7 @@
 }
 .articleGridPrice h2 {
   font-size: 38px;
+  overflow-wrap: break-word;
 }
 
 .articleGridInfo h1 {
@@ -167,7 +210,7 @@
   top: 0;
   right: 0;
   height: 15%;
-  width: 50%;
+  width: 30%;
   display: flex;
   gap: 8px;
   padding-top: 8px;
@@ -218,5 +261,164 @@
   color: var(--orange-500);
 }
 .deleteListingGrid:hover {
+  color: var(--orange-500);
+}
+
+.eomOpenBtn {
+  height: 100%;
+  width: 50px;
+  background-color: var(--neutral-900);
+  color: var(--neutral-400);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.1s ease;
+  flex-grow: 0;
+}
+
+.eomOpenBtn:hover {
+  color: var(--orange-500);
+}
+
+/* EXTRA OPTIONS MODAL CSS */
+
+.eomMainDiv {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.eomCloseBtn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  top: 4px;
+  left: 4px;
+  color: var(--neutral-300);
+  transition: 0.1s ease;
+}
+
+.eomCloseBtn:hover {
+  color: var(--orange-500);
+}
+
+.eomSecondaryDiv {
+  height: 50%;
+  width: 50%;
+  background-color: var(--neutral-900);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: var(--neutral-300);
+  border-radius: 6px;
+}
+.eomSelect {
+  margin-bottom: 32px;
+  height: 50px;
+  font-size: 16px;
+  background-color: var(--neutral-500);
+  color: white;
+  border-radius: 6px;
+}
+
+.eomH1 {
+  font-size: 36px;
+}
+.eomFilterPrice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.eomPrice {
+  text-align: center;
+  width: 100px;
+  font-size: 22px;
+}
+
+.eomSaveBtn {
+  width: 100px;
+  border: none;
+  background-color: var(--neutral-500);
+  border-radius: 6px;
+  color: white;
+  padding: 8px;
+  margin-top: 32px;
+  width: 150px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.1 ease;
+}
+.eomSaveBtn:hover {
+  background-color: var(--orange-500);
+}
+
+.eomForm {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.eomForm > fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eomSortBy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.eomFilterPrice > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eomFilterButton {
+  width: 100%;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  background-color: var(--neutral-800);
+}
+
+.eomFilterButton:hover {
+  background-color: var(--orange-500);
+}
+
+.eomRemoveFilterPrice {
+  background-color: transparent;
+  border: none;
+  color: var(--neutral-300);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+
+.eomRemoveFilterPrice:hover {
   color: var(--orange-500);
 }

@@ -21,15 +21,59 @@ export const addVehicle = async (req, res) => {
 };
 
 export const getVehicles = async (req, res) => {
+  const { page, sortBy, startingPrice, finalPrice } = req.query;
+
+  // find all vehicles in the database
   const allVehicles = await vehicleModel.find().populate("makeId", "name");
 
-  res.json(allVehicles);
+  // calculate what is a max possible page number on homepage
+  const pageOutput = Math.ceil(allVehicles.length / 10);
+
+  // display only items on a certain page
+  let newVehicleArray = [];
+  const endingIndex = 10 * page - 1;
+  const startingIndex = endingIndex - 9;
+  allVehicles.forEach((vehicle, i) => {
+    if (i >= startingIndex && i <= endingIndex) {
+      newVehicleArray.push(vehicle);
+    }
+  });
+
+  //if user set sorting in extra options
+  switch (sortBy) {
+    case "Highest to lowest price":
+    case "htl_price":
+      newVehicleArray.sort((a, b) => b.price - a.price);
+      break;
+    case "Lowest to highest price":
+    case "lth_price":
+      newVehicleArray.sort((a, b) => a.price - b.price);
+      break;
+    case "None":
+      break;
+  }
+
+  //if user set filter by price in extra options
+  if (startingPrice) {
+    let filterByPriceArray = [];
+    newVehicleArray.forEach((vehicle) => {
+      if (vehicle.price >= startingPrice && vehicle.price <= finalPrice) {
+        filterByPriceArray.push(vehicle);
+      }
+    });
+    newVehicleArray = [...filterByPriceArray];
+  }
+
+  res.json({
+    allVehicles: newVehicleArray,
+    maxPage: pageOutput,
+  });
 };
 
 export const deleteVehicle = async (req, res) => {
   const { vehicleId } = req.body;
 
-  const deleteVehicle = await vehicleModel.findByIdAndDelete(vehicleId);
+  await vehicleModel.findByIdAndDelete(vehicleId);
 
   res.json("ok");
 };

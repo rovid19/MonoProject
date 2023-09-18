@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import VehicleForm from "../../Components/VehicleForm";
-import { vehicleDbId } from "../../Stores/Vehicle";
-import { getVehicleById } from "../../Services/ApiRequests";
+import { vehicleDbId } from "../../Stores/VehicleStore";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react";
-import { subPage } from "../../Stores/Page";
+import { vehicleStore } from "../../Stores/VehicleStore";
+import homeStore from "../../Stores/HomeStore";
 
 const index = () => {
   const { vehicleId } = useParams();
@@ -13,14 +13,14 @@ const index = () => {
     if (!vehicleDbId.vehicleId) {
       vehicleDbId.addVehicleId(vehicleId);
 
-      subPage.addPage("editVehicle");
+      homeStore.setSubPage("editVehicle");
     }
   }, []);
   // fetch data about vehicle by their ID
   useEffect(() => {
-    if (vehicleDbId) getVehicleById(vehicleDbId);
+    if (vehicleDbId) vehicleStore.getVehicleById(vehicleDbId.vehicleId);
   }, [vehicleDbId]);
-  console.log(subPage.subPage);
+
   return (
     <section className="mainSection">
       <div className="mainDiv">

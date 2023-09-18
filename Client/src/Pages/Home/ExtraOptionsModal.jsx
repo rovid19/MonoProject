@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
-import extraOptionsForm from "../../Stores/ExtraOptionsForm";
+//import extraOptionsForm from "../../Stores/ExtraOptionsForm";
 import { observer } from "mobx-react";
-import { navigate } from "../../Stores/Navigate";
 import { useNavigate } from "react-router-dom";
 import { toJS } from "mobx";
-import { page } from "../../Stores/Page";
-import { getVehicle } from "../../Services/ApiRequests";
-import { queryParams } from "../../Stores/Query";
+import { vehicleStore } from "../../Stores/VehicleStore";
+import homeStore from "../../Stores/HomeStore";
+import { sortFilterForm } from "../../Stores/HomeStore";
 
-const form = extraOptionsForm;
+//const form = extraOptionsForm;
 let sideEffectTrigger = 0;
 export const submitSortFilter = () => {
-  const startingPrice = form.values().startingPrice;
-  const finalPrice = form.values().finalPrice;
-  const sortBy = form.values().sortBy;
+  const startingPrice = sortFilterForm.values().startingPrice;
+  const finalPrice = sortFilterForm.values().finalPrice;
+  const sortBy = sortFilterForm.values().sortBy;
   // Initialize the base URL without any sorting or filtering parameters, only including paging
-  let baseUrl = `/allvehicles?page=${page.page}&size=10`;
+  let baseUrl = `/allvehicles?page=${homeStore.page}&size=10`;
   // Initialize query parameter for price filtering
   let filterUrl = "";
   // Initialize query parameter for sorting
   let sortUrl = "";
 
   // Handle price filtering set by the user
-  if (form.values().startingPrice) {
+  if (sortFilterForm.values().startingPrice) {
     filterUrl = `&price=${startingPrice}-${finalPrice}`;
   } else {
     filterUrl = "";
@@ -40,16 +39,16 @@ export const submitSortFilter = () => {
       break;
   }
 
-  navigate.navigate(baseUrl + filterUrl + sortUrl);
+  homeStore.navigate(baseUrl + filterUrl + sortUrl);
   // Populate a MobX object with query parameters
   const queryP = window.location.search.replace(
-    `?page=${page.page}&size=10`,
+    `?page=${homeStore.page}&size=10`,
     ""
   );
-  queryParams.addQueryParams(queryP);
+  homeStore.setQuery(queryP);
 
   // API request
-  getVehicle(sortBy, startingPrice, finalPrice);
+  vehicleStore.getVehicles(sortBy, startingPrice, finalPrice, homeStore.page);
 
   // Increment sideEffectTrigger to close modal via useEffect
   sideEffectTrigger++;
@@ -69,14 +68,14 @@ const ExtraOptionsModal = ({ setIsExtraOptionsVisible }) => {
 
   // If the user previously set a price filter, reapply it as soon as the extra options modal is displayed
   useEffect(() => {
-    if (form.values().startingPrice) {
+    if (sortFilterForm.values().startingPrice) {
       setIsFilterPriceVisible(true);
     }
   }, []);
 
   // Store the navigate function in MobX due to hook limitations
   useEffect(() => {
-    navigate.setNavigate(navigateHook);
+    homeStore.setNavigate(navigateHook);
   }, []);
 
   return (
@@ -103,18 +102,21 @@ const ExtraOptionsModal = ({ setIsExtraOptionsVisible }) => {
             />
           </svg>
         </button>
-        <form className="eomForm" onSubmit={form.onSubmit}>
+        <form className="eomForm" onSubmit={sortFilterForm.onSubmit}>
           <fieldset>
             <div className="eomSortBy">
               <label htmlFor="sortOrder" className="eomH1">
                 Sort by:
               </label>
-              <select {...form.$("sortBy").bind()} className="eomSelect">
-                {toJS(form.fields.data_.get("sortBy").value_.$options).map(
-                  (option, i) => {
-                    return <option key={i}>{option.label}</option>;
-                  }
-                )}
+              <select
+                {...sortFilterForm.$("sortBy").bind()}
+                className="eomSelect"
+              >
+                {toJS(
+                  sortFilterForm.fields.data_.get("sortBy").value_.$options
+                ).map((option, i) => {
+                  return <option key={i}>{option.label}</option>;
+                })}
               </select>
             </div>
 
@@ -129,8 +131,8 @@ const ExtraOptionsModal = ({ setIsExtraOptionsVisible }) => {
                         className="eomRemoveFilterPrice"
                         onClick={() => {
                           setIsFilterPriceVisible(false);
-                          form.$("startingPrice").set("value", null);
-                          form.$("finalPrice").set("value", null);
+                          sortFilterForm.$("startingPrice").set("value", null);
+                          sortFilterForm.$("finalPrice").set("value", null);
                         }}
                       >
                         <svg
@@ -150,7 +152,7 @@ const ExtraOptionsModal = ({ setIsExtraOptionsVisible }) => {
                       </button>
                     </span>
                     <input
-                      {...form.$("startingPrice").bind()}
+                      {...sortFilterForm.$("startingPrice").bind()}
                       id="fromPrice"
                       className="eomPrice"
                       name="fromPrice"
@@ -160,7 +162,7 @@ const ExtraOptionsModal = ({ setIsExtraOptionsVisible }) => {
                       To
                     </label>
                     <input
-                      {...form.$("finalPrice").bind()}
+                      {...sortFilterForm.$("finalPrice").bind()}
                       id="toPrice"
                       className="eomPrice"
                       name="toPrice"

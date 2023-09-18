@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { deleteVehicle, getVehicle } from "../../Services/ApiRequests.jsx";
-import { vehicleData, vehicleDbId } from "../../Stores/Vehicle";
-import { toJS } from "mobx";
+import { vehicleDbId } from "../../Stores/VehicleStore";
 import { observer } from "mobx-react";
-import { subPage } from "../../Stores/Page";
 import { useLocation, useNavigate } from "react-router-dom";
 import ExtraOptionsModal from "./ExtraOptionsModal.jsx";
 import ExtraOptionsControls from "./ExtraOptionsControls.jsx";
 import AllVehiclesMap from "./AllVehiclesMap.jsx";
-import { page } from "../../Stores/Page";
-import { queryParams } from "../../Stores/Query.jsx";
+import { vehicleStore } from "../../Stores/VehicleStore";
+import homeStore from "../../Stores/HomeStore";
 
 const index = () => {
   const [listGridToggle, setListGridToggle] = useState("List");
@@ -17,7 +14,7 @@ const index = () => {
   const [isExtraOptionsVisible, setIsExtraOptionsVisible] = useState(false);
 
   // Convert MobX observable to a plain JavaScript object
-  const allVehicles = toJS(vehicleData.allVehicle);
+  //const allVehicles = toJS(vehicleData.allVehicle);
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -32,28 +29,33 @@ const index = () => {
 
     // Handle cases where the user manually enters a URL
     if (queryPage) {
-      navigate(`/allvehicles?page=${queryPage}&size=10` + queryParams);
       setTimeout(() => {
-        page.setPage(queryPage);
-      }, 100);
+        navigate(`/allvehicles?page=${queryPage}&size=10` + queryParams);
+        setTimeout(() => {
+          homeStore.setPage(queryPage);
+        }, 100);
+      }, [100]);
     }
     // Redirect to default page upon initial entry
     else {
-      navigate(`/allvehicles?page=${subPage}&size=10` + queryParams);
+      setTimeout(() => {
+        navigate(`/allvehicles?page=${homeStore.page}&size=10` + queryParams);
+      }),
+        [100];
     }
   }, []);
 
   // Retrieve all vehicle records from the database
   useEffect(() => {
-    const pageNumber = page.page;
+    const pageNumber = homeStore.page;
     const sortBy = query.get("sort");
     const filterPrice = query.get("price");
     // Populate a MobX object with query parameters
     const queryP = window.location.search.replace(
-      `?page=${page.page}&size=10`,
+      `?page=${homeStore.page}&size=10`,
       ""
     );
-    queryParams.addQueryParams(queryP);
+    homeStore.setQuery(queryP);
     // Finding the position of the first dash ('-') in the 'price' query parameter
     const dashIndex = filterPrice && filterPrice.indexOf("-");
     // Extract the 'startingPrice' and 'finalPrice' from the 'filterPrice' parameter for further processing
@@ -61,13 +63,13 @@ const index = () => {
     const finalPrice =
       filterPrice && filterPrice.slice(dashIndex + 1, filterPrice.length);
 
-    getVehicle(sortBy, startingPrice, finalPrice, pageNumber);
-  }, [page.page]);
+    vehicleStore.getVehicles(sortBy, startingPrice, finalPrice, pageNumber);
+  }, [homeStore.page, vehicleStore.getVehiclesTrigger]);
 
   // Remove vehicle record from the database
   useEffect(() => {
     if (vehicleId) {
-      deleteVehicle(vehicleId);
+      vehicleStore.deleteVehicle(vehicleId);
     }
   }, [vehicleId]);
 
@@ -75,7 +77,7 @@ const index = () => {
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
-
+  console.log(vehicleStore.getVehiclesTrigger);
   return (
     <section
       className={
@@ -97,9 +99,7 @@ const index = () => {
 
       <AllVehiclesMap
         setVehicleId={setVehicleId}
-        allVehicles={allVehicles}
         listGridToggle={listGridToggle}
-        subPage={subPage}
         navigate={navigate}
         vehicleDbId={vehicleDbId}
       />

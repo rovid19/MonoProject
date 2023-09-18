@@ -1,10 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { page } from "../../Stores/Page";
 import { useEffect } from "react";
-import { navigate } from "../../Stores/Navigate";
 import { useNavigate } from "react-router-dom";
-import { queryParams } from "../../Stores/Query";
+import { vehicleStore } from "../../Stores/VehicleStore";
+import homeStore from "../../Stores/HomeStore";
 
 const ExtraOptionsControls = ({
   setIsExtraOptionsVisible,
@@ -13,7 +12,7 @@ const ExtraOptionsControls = ({
   const navigateHook = useNavigate();
   // Store the navigate function in MobX due to hook limitations
   useEffect(() => {
-    navigate.setNavigate(navigateHook);
+    homeStore.setNavigate(navigateHook);
   }, []);
   return (
     <div className="homeControls">
@@ -49,13 +48,12 @@ const ExtraOptionsControls = ({
       <div className="pageButtons">
         <button
           onClick={() => {
-            const currentPage = Number(page.page);
+            const currentPage = Number(homeStore.page);
             const previousPage = currentPage - 1;
             if (currentPage > 1) {
-              page.setPage(previousPage);
-              navigate.navigate(
-                `/allvehicles?page=${previousPage}&size=10` +
-                  queryParams.queryParams
+              homeStore.setPage(previousPage);
+              homeStore.navigate(
+                `/allvehicles?page=${previousPage}&size=10` + homeStore.query
               );
             }
           }}
@@ -76,18 +74,18 @@ const ExtraOptionsControls = ({
           </svg>
         </button>
         <h1>
-          {page.page}/{page.lastPage}
+          {homeStore.page}/{vehicleStore.lastPage}
         </h1>
         <button
           onClick={() => {
-            const currentPage = Number(page.page);
+            const currentPage = Number(homeStore.page);
             const nextPage = currentPage + 1;
-            console.log(nextPage);
-            if (currentPage < page.lastPage) {
-              page.setPage(nextPage);
-              navigate.navigate(
-                `/allvehicles?page=${nextPage}&size=10` +
-                  queryParams.queryParams
+
+            if (currentPage < vehicleStore.lastPage) {
+              homeStore.setPage(nextPage);
+
+              homeStore.navigate(
+                `/allvehicles?page=${nextPage}&size=10` + homeStore.query
               );
             }
           }}

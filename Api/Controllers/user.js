@@ -81,11 +81,15 @@ export const deleteVehicle = async (req, res) => {
 export const getVehicleById = async (req, res) => {
   const { vehicleId } = req.params;
 
-  const findVehicle = await vehicleModel
-    .findById(vehicleId)
-    .populate("makeId", "name");
+  try {
+    const findVehicle = await vehicleModel
+      .findById(vehicleId)
+      .populate("makeId", "name");
 
-  res.json(findVehicle);
+    res.json(findVehicle);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const editVehicle = async (req, res) => {

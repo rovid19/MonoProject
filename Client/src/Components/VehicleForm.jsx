@@ -1,33 +1,33 @@
 import React, { useEffect } from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
-import { addVehicle, editVehicle } from "../Services/ApiRequests";
-import { vehicle, vehicleDbId } from "../Stores/Vehicle";
+import { vehicleDbId } from "../Stores/VehicleStore";
 import { useNavigate } from "react-router-dom";
-import { subPage } from "../Stores/Page";
-import vehicleForm from "../Stores/Forms";
-import { navigate } from "../Stores/Navigate";
+import homeStore from "../Stores/HomeStore";
+//import vehicleForm from "../Stores/VehicleForm";
+import { vehicleStore } from "../Stores/VehicleStore";
+import { vehicleForm } from "../Stores/VehicleStore";
 
-const form = vehicleForm;
+//const form = vehicleForm;
 
 // edit vehicle and save changes to the database
 export const editVehicleForm = () => {
   const { vehicleName, vehicleModel, vehicleYear, vehiclePrice } =
-    form.values();
-  editVehicle(
+    vehicleForm.values();
+  vehicleStore.editVehicle(
     vehicleName,
     vehicleModel,
     vehicleYear,
     vehiclePrice,
     vehicleDbId
   );
-  navigate.navigate("/");
+  homeStore.navigate("/allvehicles?page=1&size=10");
 };
 
-// add vehicle to the database if subPage is addVehicle
+// Insert new vehicle into database
 export const addVehicleToDatabase = action(() => {
   const { vehicleName, vehicleModel, vehicleYear, vehiclePrice } =
-    form.values();
+    vehicleForm.values();
 
   const newVehicleForm = {
     vehicleName,
@@ -36,71 +36,85 @@ export const addVehicleToDatabase = action(() => {
     vehiclePrice,
   };
 
-  // api post request to add newly formed vehicle object to the database
-  addVehicle(newVehicleForm);
+  // Make API call to add new vehicle to database
+  vehicleStore.addVehicle(newVehicleForm);
   setTimeout(() => {
-    navigate.navigate("/");
+    homeStore.navigate("/allvehicles?page=1&size=10");
   }, [500]);
 });
 
 const VehicleForm = () => {
   const navigateHook = useNavigate();
 
-  // determine whether the subpage is for editing an existing vehicle or adding a new one, and set the four base vehicle states accordingly
+  // Determine whether the subpage is for editing an existing vehicle or adding a new one, and set the four base vehicle states accordingly
   useEffect(() => {
-    if (subPage.subPage === "editVehicle") {
-      form.update({
-        vehicleName: vehicle.vehicleName,
-        vehicleModel: vehicle.vehicleModel,
-        vehicleYear: vehicle.vehicleYear,
-        vehiclePrice: vehicle.vehiclePrice,
+    if (homeStore.subPage === "editVehicle") {
+      vehicleForm.update({
+        vehicleName: vehicleStore.vehicleName,
+        vehicleModel: vehicleStore.vehicleModel,
+        vehicleYear: vehicleStore.vehicleYear,
+        vehiclePrice: vehicleStore.vehiclePrice,
       });
     }
-  }, [subPage.subPage, vehicle.vehicleModel]);
+  }, [homeStore.subPage, vehicleStore.vehicleModel, vehicleStore.vehiclePrice]);
 
-  //set navigate as mobx value since I can't use hooks and mobx together
+  // Store the navigate function in MobX due to hook limitations
   useEffect(() => {
-    navigate.setNavigate(navigateHook);
+    homeStore.setNavigate(navigateHook);
   }, []);
 
   return (
-    <form className="formMain" onSubmit={form.onSubmit}>
+    <form className="formMain" onSubmit={vehicleForm.onSubmit}>
       <fieldset className="fieldsetForm">
         <div>
           <legend className="legendForm">Vehicle Information</legend>
         </div>
         <div className="divForm">
           <label className="labelForm" htmlFor="vehicleName">
-            {form.$("vehicleName").label}
+            {vehicleForm.$("vehicleName").label}
           </label>
-          <input {...form.$("vehicleName").bind()} className="inputForm" />
+          <input
+            {...vehicleForm.$("vehicleName").bind()}
+            className="inputForm"
+          />
         </div>
 
         <div className="divForm">
           <label className="labelForm" htmlFor="vehicleModel">
-            {form.$("vehicleModel").label}
+            {vehicleForm.$("vehicleModel").label}
           </label>
-          <input {...form.$("vehicleModel").bind()} className="inputForm" />
+          <input
+            {...vehicleForm.$("vehicleModel").bind()}
+            className="inputForm"
+          />
         </div>
 
         <div className="divForm">
           <label className="labelForm" htmlFor="vehicleYear">
-            {form.$("vehicleYear").label}
+            {vehicleForm.$("vehicleYear").label}
           </label>
-          <input {...form.$("vehicleYear").bind()} className="inputForm" />
+          <input
+            type="number"
+            {...vehicleForm.$("vehicleYear").bind()}
+            className="inputForm"
+          />
         </div>
 
         <div className="divForm">
           <label className="labelForm" htmlFor="vehiclePrice">
-            {form.$("vehiclePrice").label}
+            {vehicleForm.$("vehiclePrice").label}
           </label>
-          <input {...form.$("vehiclePrice").bind()} className="inputForm" />
+          <input
+            type="number"
+            {...vehicleForm.$("vehiclePrice").bind()}
+            className="inputForm"
+          />
         </div>
       </fieldset>
 
       <div className="buttonDiv">
         <button type="submit">
-          {subPage.subPage === "editVehicle" ? "Save changes" : "Add vehicle"}
+          {homeStore.subPage === "editVehicle" ? "Save changes" : "Add vehicle"}
         </button>
       </div>
     </form>

@@ -3,7 +3,7 @@ import { toJS } from "mobx";
 
 class VehicleService extends BaseService {
   constructor() {
-    super("http://localhost:3000/api/user");
+    super("https://monoproject-api.up.railway.app/api/user");
   }
 
   async addVehicle(vehicleObject) {

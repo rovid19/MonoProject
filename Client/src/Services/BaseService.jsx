@@ -17,9 +17,11 @@ class BaseService {
     }
   }
 
-  async post(endpoint, data) {
+  async post(endpoint, data, extraHeaders) {
     try {
-      const response = await axios.post(`${this.baseUrl}${endpoint}`, data);
+      const response = await axios.post(`${this.baseUrl}${endpoint}`, data, {
+        headers: { ...extraHeaders },
+      });
       return response.data;
     } catch (e) {
       console.error(e);

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { vehicleStore } from "../../Stores/VehicleStore";
 import { toJS } from "mobx";
 import homeStore from "../../Stores/HomeStore";
@@ -10,6 +10,15 @@ const AllVehiclesMap = ({
   vehicleDbId,
   navigate,
 }) => {
+  const [vehicleIndex, setVehicleIndex] = useState(null);
+  const [vehicleClassName, setVehicleClassName] = useState("articleListHome");
+  useEffect(() => {
+    if (listGridToggle === "Grid") {
+      setVehicleClassName("articleGridHome");
+    } else {
+      setVehicleClassName("articleListHome");
+    }
+  }, [listGridToggle]);
   return (
     <>
       {toJS(vehicleStore.vehicles) &&
@@ -17,7 +26,9 @@ const AllVehiclesMap = ({
           return (
             <article
               className={
-                listGridToggle === "List"
+                vehicleIndex === i
+                  ? vehicleClassName
+                  : listGridToggle === "List"
                   ? "articleListHome"
                   : "articleGridHome"
               }
@@ -36,7 +47,17 @@ const AllVehiclesMap = ({
                       ? "deleteListing"
                       : "deleteListingGrid"
                   }
-                  onClick={() => setVehicleId(vehicle._id)}
+                  onClick={() => {
+                    setVehicleIndex(i);
+                    setVehicleClassName((prev) => prev + " deleteAni");
+                    setVehicleId(vehicle._id);
+                    setTimeout(() => {
+                      setVehicleClassName((prev) => {
+                        const newPrev = prev.replace("deleteAni", "");
+                        return newPrev;
+                      });
+                    }, [500]);
+                  }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +103,7 @@ const AllVehiclesMap = ({
                     : "articleGridImg"
                 }
               >
-                <img></img>
+                <img className="vehiclesMapPicture" src={vehicle.picture}></img>
               </div>
               {listGridToggle === "Grid" ? (
                 <>

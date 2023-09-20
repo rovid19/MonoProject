@@ -24,12 +24,26 @@ class VehicleService extends BaseService {
     return this.delete("/delete-vehicle", { vehicleId });
   }
 
-  editVehicle(name, model, year, price, vehicleId) {
-    return this.put("/edit-vehicle", { name, model, year, price, vehicleId });
+  editVehicle(name, model, year, price, vehicleId, picture) {
+    return this.put("/edit-vehicle", {
+      name,
+      model,
+      year,
+      price,
+      vehicleId,
+      picture,
+    });
   }
 
   getVehicleById(vehicleId) {
     return this.get(`/get-vehicle-by-id/${vehicleId}`);
+  }
+
+  uploadVehiclePicture(picture) {
+    const extraHeaders = {
+      "Content-Type": "multipart/form-data; boundary=----",
+    };
+    return this.post("/upload-vehicle-picture", picture, extraHeaders);
   }
 }
 

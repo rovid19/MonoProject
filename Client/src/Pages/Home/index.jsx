@@ -77,7 +77,6 @@ const index = () => {
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
-  console.log(vehicleStore.getVehiclesTrigger);
   return (
     <section
       className={

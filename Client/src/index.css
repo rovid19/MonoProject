@@ -93,6 +93,8 @@
 
 /* VEHICLE FORM */
 .formMain {
+  width: 100%;
+
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -100,26 +102,81 @@
   align-items: center;
 }
 .fieldsetForm {
-  height: 70%;
+  height: 100%;
   width: 100%;
   border: none;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
-.buttonDiv {
+
+.formPictureDiv {
+  width: 40%;
+  height: 100%;
+  background-color: var(--neutral-700);
+  position: relative;
+  transition: 0.1s ease;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.formPictureDiv:hover {
+  background-color: var(--orange-500);
+}
+.formPictureDiv:hover .formUploadIcon {
+  background-color: var(--orange-500);
+  color: white;
+}
+.formPictureDiv:hover .uploadIconText {
+  color: white;
+}
+.formPictureDiv:hover .editPictureDiv {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+.formPictureDiv:hover .editH {
+  opacity: 1;
+}
+
+.editH {
+  opacity: 0;
+  transition: 0.2s ease;
+}
+
+.formInfoDiv {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding-left: 16px;
+  flex-direction: column;
+}
+
+.formInfoDiv > legend {
+  color: var(--neutral-500);
+  padding-bottom: 8px;
+}
+
+.vehiclePicture {
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.vehiclePictureLabel {
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  z-index: 50;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .divForm {
   display: flex;
   flex-direction: column;
   margin-top: 4px;
-  align-items: center;
-  gap: 4px;
   width: 100%;
 }
 
@@ -128,7 +185,7 @@
   background-color: var(--neutral-800);
   height: 60px;
   font-size: 22px;
-  text-align: center;
+  padding: 8px;
   color: var(--neutral-200);
   border: none;
   border-radius: 6px;
@@ -144,7 +201,14 @@
   margin-bottom: 20px;
 }
 
+.buttonDiv {
+  padding-top: 32px;
+  width: 100%;
+  display: flex;
+}
+
 .buttonDiv button {
+  align-self: flex-end;
   border: none;
   padding: 8px;
   width: 30%;
@@ -159,4 +223,62 @@
   transition: 0.1s all;
   background-color: var(--orange-500);
   color: white;
+}
+.formUploadIconBtn {
+  border: none;
+}
+.uploadIconDiv {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.formUploadIcon {
+  transition: 0.1s ease;
+  background-color: var(--neutral-700);
+  border: none;
+  color: var(--neutral-500);
+  outline: none;
+  cursor: pointer;
+}
+.uploadIconText {
+  transition: 0.1s ease;
+  color: var(--neutral-500);
+}
+
+.formPicture {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  z-index: 30;
+}
+
+.editPictureDiv {
+  z-index: 40;
+  color: var(--neutral-300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.699);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  flex-direction: column;
+  transition: 0.1s ease;
+}
+
+.formUploadIconEdit {
+  background-color: transparent;
+}
+
+.editPictureDiv:hover {
 }

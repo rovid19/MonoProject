@@ -8,7 +8,7 @@ import homeStore from "../../Stores/HomeStore";
 
 const index = () => {
   const { vehicleId } = useParams();
-  // if vehicle ID doesnt exists already, set vehicle ID
+  // if vehicle ID doesnt exist already, set vehicle ID
   useEffect(() => {
     if (!vehicleDbId.vehicleId) {
       vehicleDbId.addVehicleId(vehicleId);

@@ -4,6 +4,7 @@ const vehicleModelSchema = new mongoose.Schema({
   name: String,
   yearMade: Number,
   price: Number,
+  picture: String,
   makeId: { type: mongoose.Schema.Types.ObjectId, ref: "vehicleMake" },
 });
 

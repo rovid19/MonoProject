@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import homeStore from "../Stores/HomeStore";
-import { vehicleForm } from "../Stores/VehicleStore";
+import { vehicleForm, vehicleStore } from "../Stores/VehicleStore";
+import { observer } from "mobx-react";
 
 const Navbar = () => {
   return (
@@ -31,7 +32,13 @@ const Navbar = () => {
             </span>
             <Link
               to="/allvehicles?page=1&size=10"
-              onClick={() => homeStore.setSubPage("home")}
+              onClick={() => {
+                vehicleForm.reset();
+                vehicleStore.setVehiclePicture("");
+                vehicleStore.setVehicleFormData(null);
+                vehicleStore.setVehicle("", "", "", "");
+                homeStore.setSubPage("home");
+              }}
               className="link"
             >
               All Vehicles
@@ -59,6 +66,9 @@ const Navbar = () => {
               to="/addvehicle"
               onClick={() => {
                 vehicleForm.reset();
+                vehicleStore.setVehiclePicture("");
+                vehicleStore.setVehicleFormData(null);
+                vehicleStore.setVehicle("", "", "", "");
                 homeStore.setSubPage("addVehicle");
               }}
               className="link"
@@ -72,4 +82,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default observer(Navbar);

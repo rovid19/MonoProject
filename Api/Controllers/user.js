@@ -1,8 +1,37 @@
 import vehicleMake from "../Models/VehicleMake.js";
 import vehicleModel from "../Models/VehicleModel.js";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import fs from "fs";
+
+const bucket = "gymtok-photo-video-upload";
+
+async function uploadToS3(path, orignalFilename, mimetype) {
+  const client = new S3Client({
+    region: "eu-north-1",
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+  });
+  const parts = orignalFilename.split(".");
+  const ext = parts[parts.length - 1];
+  const newFilename = Date.now() + "." + ext;
+
+  const data = await client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Body: fs.readFileSync(path),
+      Key: newFilename,
+      ContentType: mimetype,
+      ACL: "public-read",
+    })
+  );
+  return `https://${bucket}.s3.amazonaws.com/${newFilename}`;
+}
 
 export const addVehicle = async (req, res) => {
   const { plainJsVehicleObject } = req.body;
+
   try {
     const newVehicleMake = await vehicleMake.create({
       name: plainJsVehicleObject.vehicleName,
@@ -12,6 +41,7 @@ export const addVehicle = async (req, res) => {
       yearMade: plainJsVehicleObject.vehicleYear,
       price: plainJsVehicleObject.vehiclePrice,
       makeId: newVehicleMake._id,
+      picture: plainJsVehicleObject.vehiclePicture,
     });
 
     res.json(newVehicleModel);
@@ -93,14 +123,17 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const editVehicle = async (req, res) => {
-  const { vehicleId, name, model, year, price } = req.body;
+  const { vehicleId, name, model, year, price, picture } = req.body;
+
   const vehicleM = await vehicleModel.findById(vehicleId.vehicleId);
+
   const vehicleMa = await vehicleMake.findById(vehicleM.makeId._id);
 
   vehicleM.set({
     name: model,
     yearMade: year,
     price: price,
+    picture: picture,
   });
 
   vehicleMa.set({
@@ -110,4 +143,15 @@ export const editVehicle = async (req, res) => {
   await vehicleM.save();
   await vehicleMa.save();
   res.json(vehicleM);
+};
+
+export const uploadImage = async (req, res) => {
+  const { path, originalname, mimetype } = req.files[0];
+
+  try {
+    const url = await uploadToS3(path, originalname, mimetype);
+    res.json(url);
+  } catch (e) {
+    console.log(e);
+  }
 };

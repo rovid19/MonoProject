@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
-import userRoute from "../Api/Routes/user.js";
+import userRoute from "./Routes/user.js";
 import { fileURLToPath } from "url";
 import path from "path";
 

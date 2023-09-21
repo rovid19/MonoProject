@@ -17,16 +17,21 @@ export const editVehicleForm = () => {
     vehiclePrice,
     vehiclePicture,
   } = vehicleForm.values();
-  vehicleStore.editVehicle(
-    vehicleName,
-    vehicleModel,
-    vehicleYear,
-    vehiclePrice,
-    vehicleDbId,
-    vehiclePicture
-  );
-  homeStore.navigate("/allvehicles?page=1&size=10");
-  vehicleStore.setVehicleFormData(null);
+
+  if (isNaN(Number(vehiclePrice)) || isNaN(Number(vehicleYear))) {
+    alert("your price and year fields should only contain numbers");
+  } else {
+    vehicleStore.editVehicle(
+      vehicleName,
+      vehicleModel,
+      vehicleYear,
+      vehiclePrice,
+      vehicleDbId,
+      vehiclePicture
+    );
+    homeStore.navigate("/allvehicles?page=1&size=10");
+    vehicleStore.setVehicleFormData(null);
+  }
 };
 
 // Insert new vehicle into database
@@ -47,13 +52,17 @@ export const addVehicleToDatabase = action(() => {
     vehiclePicture,
   };
 
+  if (isNaN(Number(vehiclePrice)) || isNaN(Number(vehicleYear))) {
+    alert("your price and year fields should only contain numbers");
+  } else {
+    vehicleStore.addVehicle(newVehicleForm);
+    setTimeout(() => {
+      homeStore.navigate("/allvehicles?page=1&size=10");
+      vehicleStore.setVehiclePicture("");
+      vehicleStore.setVehicleFormData(null);
+    }, [500]);
+  }
   // Make API call to add new vehicle to database
-  vehicleStore.addVehicle(newVehicleForm);
-  setTimeout(() => {
-    homeStore.navigate("/allvehicles?page=1&size=10");
-    vehicleStore.setVehiclePicture("");
-    vehicleStore.setVehicleFormData(null);
-  }, [500]);
 });
 
 const VehicleForm = () => {
@@ -176,7 +185,7 @@ const VehicleForm = () => {
               {vehicleForm.$("vehicleYear").label}
             </label>
             <input
-              type="number"
+              type="file"
               {...vehicleForm.$("vehicleYear").bind()}
               className="inputForm"
             />

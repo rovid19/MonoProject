@@ -440,7 +440,7 @@
 /* vehicle delete animation */
 
 .deleteAni {
-  animation: deleteAnimation 0.5s forwards;
+  animation: deleteAnimation 1s forwards;
 }
 
 @keyframes deleteAnimation {

@@ -56,7 +56,7 @@ const AllVehiclesMap = ({
                         const newPrev = prev.replace("deleteAni", "");
                         return newPrev;
                       });
-                    }, [500]);
+                    }, [1000]);
                   }}
                 >
                   <svg
@@ -118,6 +118,7 @@ const AllVehiclesMap = ({
                             " " +
                             vehicle.yearMade}
                       </h2>
+                      <h1>Vehicle Model</h1>
                     </div>
                     <div className="articleGridPrice">
                       {" "}
@@ -131,13 +132,10 @@ const AllVehiclesMap = ({
                   <div className="articleListInfo">
                     <h1>Vehicle Name</h1>
                     <h2>
-                      {vehicle &&
-                        vehicle.makeId.name +
-                          " " +
-                          vehicle.name +
-                          " " +
-                          vehicle.yearMade}
+                      {vehicle && vehicle.makeId.name + " " + vehicle.yearMade}
                     </h2>
+                    <h1>Vehicle Model</h1>
+                    <h2>{vehicle.name}</h2>
                   </div>
                   <div className="articleListPrice">
                     {" "}

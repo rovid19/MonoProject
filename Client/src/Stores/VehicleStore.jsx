@@ -100,7 +100,7 @@ class VehicleStore {
       const addedVehicle = await vehicleService.addVehicle(vehicleObject);
       // Add the newly added vehicle to the vehicles array
       this.vehicles.push(addedVehicle);
-      this.vehiclePicture = "";
+      this.setVehiclePicture("");
       vehicleForm.reset();
     } catch (e) {
       console.log(e);

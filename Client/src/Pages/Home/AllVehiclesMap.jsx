@@ -112,13 +112,10 @@ const AllVehiclesMap = ({
                       <h1>Vehicle Name</h1>
                       <h2>
                         {vehicle &&
-                          vehicle.makeId.name +
-                            " " +
-                            vehicle.name +
-                            " " +
-                            vehicle.yearMade}
+                          vehicle.makeId.name + " " + vehicle.yearMade}
                       </h2>
                       <h1>Vehicle Model</h1>
+                      <h2>{vehicle.name}</h2>
                     </div>
                     <div className="articleGridPrice">
                       {" "}
